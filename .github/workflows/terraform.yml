@@ -1,0 +1,47 @@
+name: Terraform Plan
+
+on:
+  push:
+    branches:
+      - "feature/**"
+
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  terraform-plan:
+    name: Terraform Plan - Preprod
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Install Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      # Terraform Format Check
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
+
+      # Terraform Init
+      - name: Terraform Init
+        working-directory: environments/preprod
+        run: terraform init
+
+      # Terraform Validate
+      - name: Terraform Validate
+        working-directory: environments/preprod
+        run: terraform validate
+
+      # Terraform Plan
+      - name: Terraform Plan
+        working-directory: environments/preprod
+        run: terraform plan -var-file="terraform.tfvars"
