@@ -10,8 +10,8 @@ on:
       - main
 
 permissions:
-  id-token: write
   contents: read
+  id-token: write
 
 jobs:
   terraform-plan:
@@ -19,12 +19,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+      # Checkout repository
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Install Terraform
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
+      # Azure Login using OIDC
       - name: Azure Login
         uses: azure/login@v2
         with:
@@ -32,17 +36,26 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Verify Azure Login
+        run: |
+          az account show
+          az account get-access-token --resource https://management.azure.com/
+
+      # Terraform Format Check
       - name: Terraform Format Check
         run: terraform fmt -check -recursive
 
+      # Terraform Init
       - name: Terraform Init
         working-directory: environments/preprod
         run: terraform init
 
+      # Terraform Validate
       - name: Terraform Validate
         working-directory: environments/preprod
         run: terraform validate
 
+      # Terraform Plan
       - name: Terraform Plan
         working-directory: environments/preprod
         run: terraform plan -var-file="terraform.tfvars"
