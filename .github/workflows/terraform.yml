@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - "feature/**"
-
   pull_request:
     branches:
       - main
@@ -18,8 +17,18 @@ jobs:
     name: Terraform Plan - Preprod
     runs-on: self-hosted
 
-    steps:
+    # Set default shell for all steps on Windows runner
+    defaults:
+      run:
+        shell: pwsh
 
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_USE_OIDC: "true"
+
+    steps:
       # Checkout repository
       - name: Checkout code
         uses: actions/checkout@v4
@@ -27,6 +36,8 @@ jobs:
       # Install Terraform
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
 
       # Azure Login using OIDC
       - name: Azure Login
