@@ -8,7 +8,7 @@ rgs = {
     location = "centralindia"
   }
 
- rg3 = {
+  rg3 = {
     name     = "rg-chor-dev-3"
     location = "centralindia"
   }
