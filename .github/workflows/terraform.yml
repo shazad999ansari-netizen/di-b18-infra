@@ -20,7 +20,7 @@ jobs:
     # Set default shell for all steps on Windows runner
     defaults:
       run:
-        shell: pwsh
+        shell: powershell
 
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
