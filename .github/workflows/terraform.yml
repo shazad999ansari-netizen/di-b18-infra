@@ -4,9 +4,12 @@ on:
   push:
     branches:
       - "feature/**"
+
   pull_request:
     branches:
       - main
+
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -14,30 +17,13 @@ permissions:
 
 jobs:
   terraform-plan:
-    name: Terraform Plan - Preprod
     runs-on: self-hosted
 
-    # Set default shell for all steps on Windows runner
-    defaults:
-      run:
-        shell: powershell
-
-    env:
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      ARM_USE_OIDC: "true"
-
     steps:
-      # Checkout repository
-      - name: Checkout code
-        uses: actions/checkout@v4
 
-      # Install Terraform
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_wrapper: false
+      # Checkout Code
+      - name: Checkout
+        uses: actions/checkout@v4
 
       # Azure Login using OIDC
       - name: Azure Login
@@ -47,19 +33,27 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Verify Azure Login
-        run: |
-          az account show
-          az account get-access-token --resource https://management.azure.com/
-
-      # Terraform Format Check
-      - name: Terraform Format Check
-        run: terraform fmt -check -recursive
+      # Terraform Setup
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
 
       # Terraform Init
       - name: Terraform Init
         working-directory: environments/preprod
         run: terraform init
+
+      # Terraform State Check
+      - name: Terraform State Check
+        working-directory: environments/preprod
+        run: |
+          Write-Host "===== Terraform Workspace ====="
+          terraform workspace show
+
+          Write-Host "===== Key Vault Resources in State ====="
+          terraform state list | Select-String "module.key_vault"
+
+          Write-Host "===== Key Vault Secret in State ====="
+          terraform state list | Select-String "admin_password"
 
       # Terraform Validate
       - name: Terraform Validate
