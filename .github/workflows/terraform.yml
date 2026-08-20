@@ -42,17 +42,7 @@ jobs:
         working-directory: environments/preprod
         run: terraform init
 
-      # Terraform State Check
-      - name: Terraform State Check
-        working-directory: environments/preprod
-        shell: powershell
-        run: |
-          Write-Host "===== Terraform Workspace ====="
-          terraform workspace show
-
-          Write-Host "===== Terraform State List ====="
-          terraform state list
-
+      
       # Terraform Validate
       - name: Terraform Validate
         working-directory: environments/preprod
