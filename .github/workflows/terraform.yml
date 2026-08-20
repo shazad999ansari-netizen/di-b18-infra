@@ -40,15 +40,17 @@ jobs:
       # Terraform Init
       - name: Terraform Init
         working-directory: environments/preprod
-        run: terraform init
+        shell: powershell
+        run: terraform init -input=false
 
-      
       # Terraform Validate
       - name: Terraform Validate
         working-directory: environments/preprod
+        shell: powershell
         run: terraform validate
 
       # Terraform Plan
       - name: Terraform Plan
         working-directory: environments/preprod
-        run: terraform plan -var-file="terraform.tfvars"
+        shell: powershell
+        run: terraform plan -input=false -var-file="terraform.tfvars"
