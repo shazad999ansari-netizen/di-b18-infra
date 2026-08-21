@@ -54,7 +54,14 @@ jobs:
       - name: Terraform Plan
         working-directory: environments/preprod
         shell: powershell
-        run: terraform plan -input=false -var-file="terraform.tfvars"
+        run: |
+          $env:Path = "C:\Terraform;$env:Path"
+          Write-Host "Terraform path:"
+          Get-Command terraform
+          Write-Host "Terraform version:"
+          terraform version
+          Write-Host "Starting Terraform Plan..."
+          terraform plan -input=false -var-file="terraform.tfvars"
 
       # Create Pull Request after successful Terraform Plan
       - name: Create Pull Request
