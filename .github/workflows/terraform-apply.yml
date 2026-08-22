@@ -54,3 +54,4 @@ jobs:
       - name: Terraform Apply
         working-directory: environments/preprod
         run: terraform apply -auto-approve tfplan
+        # Note: plan aur apply same job mein hain, same runner pe — isliye tfplan valid hai
