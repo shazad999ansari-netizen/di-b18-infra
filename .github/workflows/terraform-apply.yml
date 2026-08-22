@@ -46,9 +46,6 @@ jobs:
         working-directory: environments/preprod
         run: terraform init
 
-      - name: Terraform State Check
-        working-directory: environments/preprod
-        run: terraform state list
 
       - name: Terraform Plan
         working-directory: environments/preprod
