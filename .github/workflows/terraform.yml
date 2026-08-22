@@ -21,11 +21,9 @@ jobs:
 
     steps:
 
-      # Checkout Code
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Azure Login using OIDC
       - name: Azure Login
         uses: azure/login@v2
         with:
@@ -33,23 +31,21 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      # Terraform Setup
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
 
-      # Terraform Init
       - name: Terraform Init
         working-directory: environments/preprod
         shell: powershell
         run: terraform init -input=false
 
-      # Terraform Validate
       - name: Terraform Validate
         working-directory: environments/preprod
         shell: powershell
         run: terraform validate
 
-      # Terraform Plan
       - name: Terraform Plan
         working-directory: environments/preprod
         shell: powershell
