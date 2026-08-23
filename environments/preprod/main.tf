@@ -65,3 +65,9 @@ resource "azurerm_network_interface_backend_address_pool_association" "lb_assoc"
   backend_address_pool_id = module.load_balancer.backend_address_pool_ids["lb1"]
 }
 
+# Import block — existing KV secret ko automatically state mein import karta hai
+# Agar already state mein hai toh yeh no-op hai
+import {
+  to = module.key_vault.azurerm_key_vault_secret.admin_password["kv1"]
+  id = "https://kv-chor-dev-2201.vault.azure.net/secrets/admin-password/9ddaa752bcef4d46a64ad3be23d7d745"
+}
