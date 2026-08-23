@@ -87,7 +87,7 @@ vms = {
     secret_name     = "admin-password"
     image_publisher = "Canonical"
     image_offer     = "0001-com-ubuntu-server-jammy"
-    image_sku       = "22_04-lts"
+    image_sku       = "22_04-lts-gen2"
     image_version   = "latest"
   }
   frontend_2 = {
@@ -103,7 +103,7 @@ vms = {
     secret_name     = "admin-password"
     image_publisher = "Canonical"
     image_offer     = "0001-com-ubuntu-server-jammy"
-    image_sku       = "22_04-lts"
+    image_sku       = "22_04-lts-gen2"
     image_version   = "latest"
   }
   backend_1 = {
@@ -119,7 +119,7 @@ vms = {
     secret_name     = "admin-password"
     image_publisher = "Canonical"
     image_offer     = "0001-com-ubuntu-server-jammy"
-    image_sku       = "22_04-lts"
+    image_sku       = "22_04-lts-gen2"
     image_version   = "latest"
   }
   backend_2 = {
@@ -135,7 +135,7 @@ vms = {
     secret_name     = "admin-password"
     image_publisher = "Canonical"
     image_offer     = "0001-com-ubuntu-server-jammy"
-    image_sku       = "22_04-lts"
+    image_sku       = "22_04-lts-gen2"
     image_version   = "latest"
   }
   database_1 = {
@@ -153,7 +153,7 @@ vms = {
     image_publisher = "Canonical"
     image_publisher = "Canonical"
     image_offer     = "0001-com-ubuntu-server-jammy"
-    image_sku       = "22_04-lts"
+    image_sku       = "22_04-lts-gen2"
     image_version   = "latest"
   }
 }
